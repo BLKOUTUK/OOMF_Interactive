@@ -4,13 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
 */
 
-export const MAX_STORY_PAGES = 10;
-export const BACK_COVER_PAGE = 11;
-export const TOTAL_PAGES = 11;
+export const MAX_STORY_PAGES = 12;
+export const BACK_COVER_PAGE = 13;
+export const TOTAL_PAGES = 13;
 export const INITIAL_PAGES = 2;
 export const GATE_PAGE = 2;
 export const BATCH_SIZE = 6;
-export const DECISION_PAGES = [3];
+export const DECISION_PAGES = [4, 8];
 
 // We replace Genres with Visual Styles since the Story is fixed
 export const VISUAL_STYLES = [

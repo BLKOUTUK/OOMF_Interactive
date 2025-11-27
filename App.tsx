@@ -123,23 +123,32 @@ const App: React.FC = () => {
     const chapter2 = "CHAPTER 2: THE AWAKENING. The Archive (Underground). Cipher activates the Nexus Engine. The team unlocks their latent powers. The Signal attacks.";
     const chapter3 = "CHAPTER 3: RECLAMATION. The Mission. The team fights back using culture and tech to restore The Echo. Victory.";
 
+    // Chapter 1: The Call (Pages 1-4)
     if (pageNum === 1) {
         instruction = `${chapter1} INCITING INCIDENT. Establish the vibe of Future ${selectedCity}. Show 'The Signal' glitches erasing culture. Include a recognizable ${selectedCity} landmark in the background distorted by the glitch. Introduce the threat.`;
     } else if (pageNum === 2) {
         instruction = `${chapter1} RISING ACTION. Cipher (The Mentor) contacts ${role.name}. They are summoned to The Underground Archive beneath ${selectedCity}.`;
     } else if (pageNum === 3) {
-        instruction = `${chapter1} DECISION POINT. ${role.name} arrives at The Archive. Cipher explains the stakes: 'Urban Renewal 2.0' is erasure of ${selectedCity}'s history. Ask the user: How do they commit to the fight?`;
+        instruction = `${chapter1} ${role.name} arrives at The Archive. Cipher explains the stakes: 'Urban Renewal 2.0' is erasure of ${selectedCity}'s history. Show the gravity of the situation.`;
     } else if (pageNum === 4) {
-        instruction = `${chapter2} The team assembles. Introduce the others (Fluxion, NovaCode, Lumina, VibraBolt - whoever the user is NOT). They stand before The Nexus Engine.`;
+        instruction = `${chapter1} DECISION POINT. Cipher reveals The Nexus Engine - the only hope to fight back. Ask the user: How do they commit to the fight?`;
+
+    // Chapter 2: The Awakening (Pages 5-8)
     } else if (pageNum === 5) {
-        instruction = `${chapter2} ACTIVATION. The Nexus Engine turns on. Energy floods the room. Visual spectacle.`;
+        instruction = `${chapter2} The team assembles. Introduce the others (Fluxion, NovaCode, Lumina, VibraBolt - whoever the user is NOT). They stand before The Nexus Engine.`;
     } else if (pageNum === 6) {
-        instruction = `${chapter2} POWERS MANIFEST. ${role.name} uses their power: ${role.power}. SUDDENLY: The Signal invades the system! Drones appear!`;
+        instruction = `${chapter2} ACTIVATION. The Nexus Engine turns on. Energy floods the room. Visual spectacle of power awakening.`;
     } else if (pageNum === 7) {
-        instruction = `${chapter3} COUNTER-ATTACK. Action sequence! The OOMF team fights the drones/glitches. Use music/sound/light metaphors.`;
+        instruction = `${chapter2} POWERS MANIFEST. ${role.name} uses their power: ${role.power}. Show the team discovering their abilities.`;
     } else if (pageNum === 8) {
-        instruction = `${chapter3} THE INFILTRATION. They enter the digital void where 'The Echo' is trapped. It's dark, cold, corporate.`;
+        instruction = `${chapter2} DECISION POINT. SUDDENLY: The Signal invades the system! Drones appear! Ask the user: How do they respond to the attack?`;
+
+    // Chapter 3: Reclamation (Pages 9-12)
     } else if (pageNum === 9) {
+        instruction = `${chapter3} COUNTER-ATTACK. Action sequence! The OOMF team fights the drones/glitches. Use music/sound/light metaphors.`;
+    } else if (pageNum === 10) {
+        instruction = `${chapter3} THE INFILTRATION. They enter the digital void where 'The Echo' is trapped. It's dark, cold, corporate.`;
+    } else if (pageNum === 11) {
         instruction = `${chapter3} CLIMAX. ${role.name} lands the final blow/hack/broadcast to break The Signal's hold. The Echo begins to materialize.`;
     } else {
         instruction = `${chapter3} RESOLUTION. The Echo returns to ${selectedCity}, vibrant and safe. Cipher speaks: "The Signal is everywhere, but so are we. We need more voices to build the future." The ending MUST explicitly bridge the story to the real world mission of BLKOUT UK: connecting Black queer communities to co-produce their own history.`;
