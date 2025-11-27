@@ -205,31 +205,51 @@ OUTPUT STRICT JSON ONLY:
 
   const generateImage = async (beat: Beat, type: ComicFace['type']): Promise<string> => {
     const contents = [];
+    const role = ROLES.find(r => r.id === selectedRoleID) || ROLES[0];
+
+    // Add reference images with detailed descriptions
     if (heroRef.current?.base64) {
-        contents.push({ text: "REFERENCE 1 [MAIN HERO]:" });
+        contents.push({ text: `REFERENCE IMAGE 1 - MAIN CHARACTER [${role.name}]: This is the protagonist. Their appearance, facial features, skin tone, hair style, and body type MUST remain exactly consistent across all panels. Pay special attention to distinctive features.` });
         contents.push({ inlineData: { mimeType: 'image/jpeg', data: heroRef.current.base64 } });
     }
     if (friendRef.current?.base64) {
-        contents.push({ text: "REFERENCE 2 [MENTOR CIPHER]:" });
+        contents.push({ text: "REFERENCE IMAGE 2 - MENTOR CIPHER: This is the mentor character. Their appearance, facial features, skin tone, hair style, and body type MUST remain exactly consistent across all panels. Cipher is a wise, tech-savvy strategist." });
         contents.push({ inlineData: { mimeType: 'image/jpeg', data: friendRef.current.base64 } });
     }
 
-    const role = ROLES.find(r => r.id === selectedRoleID) || ROLES[0];
+    // Add first story panel as additional reference for consistency
+    const firstStoryPanel = historyRef.current.find(f => f.type === 'story' && f.imageUrl && f.pageIndex === 1);
+    if (firstStoryPanel?.imageUrl && type === 'story') {
+        const base64Data = firstStoryPanel.imageUrl.split(',')[1];
+        if (base64Data) {
+            contents.push({ text: `REFERENCE IMAGE 3 - FIRST PANEL STYLE: This shows ${role.name} in the story's art style. Match this visual style, character rendering, and artistic approach for consistency.` });
+            contents.push({ inlineData: { mimeType: 'image/png', data: base64Data } });
+        }
+    }
+
     const styleDescription = getStyleDescription(selectedGenre);
-    
+
     let promptText = `${styleDescription} SETTING: Future ${selectedCity}. `;
-    
+
+    // Add character appearance descriptions from references
+    const heroDesc = heroRef.current?.desc ? ` ${role.name} appearance: ${heroRef.current.desc}` : '';
+    const cipherDesc = friendRef.current?.desc ? ` Cipher appearance: ${friendRef.current.desc}` : '';
+
     if (type === 'cover') {
         const langName = LANGUAGES.find(l => l.code === selectedLanguage)?.name || "English";
-        promptText += `TYPE: Comic Book Cover. TITLE: "THE OOMF" (OR LOCALIZED IN ${langName.toUpperCase()}). Visual: Heroic team shot with [MAIN HERO] center. ${selectedCity} skyline with recognisable landmarks in background with digital glitches.`;
+        promptText += `TYPE: Comic Book Cover. TITLE: "THE OOMF" (OR LOCALIZED IN ${langName.toUpperCase()}). Visual: Heroic team shot with [${role.name}] in center matching REFERENCE IMAGE 1 exactly.${heroDesc} ${selectedCity} skyline with recognisable landmarks in background with digital glitches.`;
     } else if (type === 'back_cover') {
         promptText += `TYPE: Comic Back Cover. Text: "JOIN THE RESISTANCE". Visual: A futuristic recruitment poster for 'The OOMF' resistance plastered on a textured urban wall in ${selectedCity}. Graffiti style, high contrast, defiant energy.`;
     } else {
         promptText += `TYPE: Vertical comic panel. SCENE: ${beat.scene}. `;
-        promptText += `CONTEXT: If scene mentions '${role.name}' or 'HERO', use REFERENCE 1. If scene mentions 'CIPHER', use REFERENCE 2. If scene mentions 'Fluxion', 'NovaCode', 'Lumina', or 'VibraBolt', render them as distinct sci-fi resistance fighters.`;
-        
-        if (beat.caption) promptText += ` INCLUDE CAPTION BOX: "${beat.caption}"`;
-        if (beat.dialogue) promptText += ` INCLUDE SPEECH BUBBLE: "${beat.dialogue}"`;
+        promptText += `\n\nCRITICAL CHARACTER CONSISTENCY RULES:
+- If scene mentions '${role.name}' or 'HERO': Render them EXACTLY matching REFERENCE IMAGE 1. Same face, same features, same appearance.${heroDesc}
+- If scene mentions 'CIPHER': Render them EXACTLY matching REFERENCE IMAGE 2. Same face, same features, same appearance.${cipherDesc}
+- If scene mentions team members (Fluxion, NovaCode, Lumina, VibraBolt): Render as distinct Black queer sci-fi characters with consistent futuristic attire.
+- Maintain consistent character appearance throughout the story. Do not alter facial features, skin tone, or distinctive characteristics.`;
+
+        if (beat.caption) promptText += `\n\nINCLUDE CAPTION BOX with text: "${beat.caption}"`;
+        if (beat.dialogue) promptText += `\n\nINCLUDE SPEECH BUBBLE with text: "${beat.dialogue}"`;
     }
 
     contents.push({ text: promptText });
