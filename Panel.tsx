@@ -124,37 +124,44 @@ export const Panel: React.FC<PanelProps> = ({ face, allFaces, onChoice, onOpenBo
 
             {/* Back Cover Actions */}
             {face.type === 'back_cover' && (
-                <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/90 p-6 text-center z-30 animate-in fade-in duration-700">
-                    <img src={BLKOUT_LOGO_WHITE} alt="BLKOUT UK" className="w-48 mb-6 opacity-90 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] hover:scale-105 transition-transform duration-300" />
-                    
-                    <h2 className="font-comic text-5xl text-yellow-400 mb-2 drop-shadow-[0_2px_0_rgba(0,0,0,1)] uppercase">The Story Continues</h2>
-                    <p className="text-white font-sans text-lg mb-6 max-w-md leading-relaxed">
-                        This is more than a comic—it's a movement. <strong className="text-yellow-400">BLKOUT UK</strong> exists to amplify the voices of Black queer men. Join us in building our collective future.
-                    </p>
-                    
-                    <div className="flex flex-col gap-3 w-full max-w-sm">
-                         <a href="https://blkoutuk.com" target="_blank" rel="noreferrer" 
-                            className="comic-btn bg-yellow-500 text-black px-6 py-4 text-xl font-bold hover:bg-yellow-400 flex items-center justify-center gap-2 no-underline hover:scale-105">
-                             <span>VISIT BLKOUTUK.COM</span>
-                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
-                         </a>
-                         
-                         <button onClick={(e) => { e.stopPropagation(); onDownload(); }} 
-                            className="comic-btn bg-blue-600 text-white px-6 py-3 text-lg font-bold hover:bg-blue-500 border-white/20 hover:scale-105">
-                             DOWNLOAD THIS ISSUE
-                         </button>
-                         
-                         <button onClick={(e) => { e.stopPropagation(); onReset(); }} 
-                             className="comic-btn bg-gray-800 text-gray-300 px-6 py-2 text-base font-bold hover:bg-gray-700 border-gray-600 hover:scale-105">
-                             START NEW ORIGIN
-                         </button>
+                <div className="absolute inset-0 flex flex-col items-center justify-between p-6 text-center z-30 animate-in fade-in duration-700 bg-gradient-to-b from-black/80 via-black/60 to-black/80">
+                    {/* Top Section: Logo and Title */}
+                    <div className="w-full flex flex-col items-center pt-4">
+                        <img src={BLKOUT_LOGO_WHITE} alt="BLKOUT UK" className="w-32 mb-3 opacity-80 drop-shadow-[0_0_8px_rgba(255,255,255,0.2)] hover:scale-105 transition-transform duration-300" />
+                        <h2 className="font-comic text-3xl text-yellow-400 drop-shadow-[0_2px_0_rgba(0,0,0,1)] uppercase tracking-wider">The Fight Has Just Begun</h2>
                     </div>
-                    
-                    <div className="mt-8 pt-4 border-t border-gray-700 w-full max-w-xs">
-                        <p className="text-gray-500 text-xs uppercase tracking-widest font-bold mb-2">INTERESTED IN CO-PRODUCING?</p>
-                        <a href="mailto:info@blkoutuk.com?subject=OOMF%20Co-Production%20Interest" className="text-yellow-500 hover:text-yellow-300 text-sm font-bold underline decoration-2 underline-offset-4">
-                            CONTACT THE TEAM &rarr;
-                        </a>
+
+                    {/* Middle Section: CTA (positioned to not cover the image too much) */}
+                    <div className="flex flex-col gap-2.5 w-full max-w-xs">
+                         <button onClick={(e) => { e.stopPropagation(); onDownload(); }}
+                            className="comic-btn bg-yellow-500 text-black px-6 py-3.5 text-lg font-bold hover:bg-yellow-400 flex items-center justify-center gap-2 hover:scale-105 shadow-lg">
+                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                             <span>DOWNLOAD ISSUE #1</span>
+                         </button>
+
+                         <a href="https://blkoutuk.com" target="_blank" rel="noreferrer"
+                            className="comic-btn bg-blue-600 text-white px-6 py-2.5 text-base font-bold hover:bg-blue-500 flex items-center justify-center gap-2 no-underline hover:scale-105 border border-white/20">
+                             <span>JOIN THE MOVEMENT</span>
+                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                         </a>
+                    </div>
+
+                    {/* Bottom Section: Secondary Actions */}
+                    <div className="w-full flex flex-col items-center gap-3 pb-2">
+                        <p className="text-white/90 font-sans text-sm max-w-sm leading-snug backdrop-blur-sm bg-black/30 px-4 py-2 rounded">
+                            Amplifying Black queer voices. <span className="text-yellow-400 font-bold">Co-produce</span> the future with us.
+                        </p>
+
+                        <div className="flex gap-2 w-full max-w-xs">
+                            <a href="mailto:info@blkoutuk.com?subject=OOMF%20Co-Production%20Interest"
+                               className="flex-1 comic-btn bg-gray-800/80 text-gray-200 px-4 py-2 text-sm font-bold hover:bg-gray-700 border border-gray-600 hover:scale-105 no-underline">
+                                CONTACT US
+                            </a>
+                            <button onClick={(e) => { e.stopPropagation(); onReset(); }}
+                                className="flex-1 comic-btn bg-gray-800/80 text-gray-200 px-4 py-2 text-sm font-bold hover:bg-gray-700 border border-gray-600 hover:scale-105">
+                                NEW STORY
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}

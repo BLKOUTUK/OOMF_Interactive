@@ -243,7 +243,7 @@ OUTPUT STRICT JSON ONLY:
         const langName = LANGUAGES.find(l => l.code === selectedLanguage)?.name || "English";
         promptText += `TYPE: Comic Book Cover. TITLE: "THE OOMF" (OR LOCALIZED IN ${langName.toUpperCase()}). Visual: Heroic team shot with [${role.name}] in center matching REFERENCE IMAGE 1 exactly.${heroDesc} ${selectedCity} skyline with recognisable landmarks in background with digital glitches.`;
     } else if (type === 'back_cover') {
-        promptText += `TYPE: Comic Back Cover. Text: "JOIN THE RESISTANCE". Visual: A futuristic recruitment poster for 'The OOMF' resistance plastered on a textured urban wall in ${selectedCity}. Graffiti style, high contrast, defiant energy.`;
+        promptText += `TYPE: Comic Back Cover integrated into the story world. Visual: ${selectedCity} at night after The Echo's return - vibrant street scene with neon lights, crowds celebrating, holographic projections of liberation, cultural symbols glowing. The OOMF team (${role.name}, Cipher, and others) visible in silhouette on rooftops overlooking the renewed city. Afrofuturist cyberpunk aesthetic with warmth and hope. Include recognizable ${selectedCity} architecture. The scene shows victory but hints at ongoing vigilance. Style should match the comic's visual language.`;
     } else {
         promptText += `TYPE: Vertical comic panel. SCENE: ${beat.scene}. `;
         promptText += `\n\nCRITICAL CHARACTER CONSISTENCY RULES:
