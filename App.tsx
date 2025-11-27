@@ -8,6 +8,7 @@ import React, { useState, useRef } from 'react';
 import { GoogleGenAI } from '@google/genai';
 import jsPDF from 'jspdf';
 import { MAX_STORY_PAGES, BACK_COVER_PAGE, TOTAL_PAGES, INITIAL_PAGES, BATCH_SIZE, DECISION_PAGES, VISUAL_STYLES, TONES, LANGUAGES, CITIES, ComicFace, Beat, Persona, ROLES } from './types';
+import { STORY_CONTEXT, NARRATIVE_VOICE } from './storyContext';
 import { Setup } from './Setup';
 import { Book } from './Book';
 import { useApiKey } from './useApiKey';
@@ -117,63 +118,66 @@ const App: React.FC = () => {
       `[Page ${p.pageIndex}] [Focus: ${p.narrative?.focus_char}] (Caption: "${p.narrative?.caption || ''}") (Dialogue: "${p.narrative?.dialogue || ''}") (Scene: ${p.narrative?.scene}) ${p.resolvedChoice ? `-> USER CHOICE: "${p.resolvedChoice}"` : ''}`
     ).join('\n');
 
-    // STORY ARC DEFINITION: The OOMF Origin
+    // STORY ARC DEFINITION: The OOMF Origin - Enhanced with full context
     let instruction = "";
-    const chapter1 = `CHAPTER 1: THE CALL. ${selectedCity}. 'The Echo', a vital Black queer sanctuary, has been erased by 'The Signal' (a digital suppression entity).`;
-    const chapter2 = "CHAPTER 2: THE AWAKENING. The Archive (Underground). Cipher activates the Nexus Engine. The team unlocks their latent powers. The Signal attacks.";
-    const chapter3 = "CHAPTER 3: RECLAMATION. The Mission. The team fights back using culture and tech to restore The Echo. Victory.";
 
-    // Chapter 1: The Call (Pages 1-4)
+    // Chapter 1: The Call to Action (Pages 1-4)
     if (pageNum === 1) {
-        instruction = `${chapter1} INCITING INCIDENT. Establish the vibe of Future ${selectedCity}. Show 'The Signal' glitches erasing culture. Include a recognizable ${selectedCity} landmark in the background distorted by the glitch. Introduce the threat.`;
+        instruction = `CHAPTER 1: THE CALL TO ACTION. ${STORY_CONTEXT.worldBuilding} Show ${selectedCity} beneath neon corporate billboards and algorithmic barriers. ${STORY_CONTEXT.theSignal} Visualize The Signal as flickering distortions erasing a vibrant Black queer cultural space. Include a recognizable ${selectedCity} landmark being consumed by digital voids. The tone is urgent yet poetic.`;
     } else if (pageNum === 2) {
-        instruction = `${chapter1} RISING ACTION. Cipher (The Mentor) contacts ${role.name}. They are summoned to The Underground Archive beneath ${selectedCity}.`;
+        instruction = `CHAPTER 1 CONTINUED. ${STORY_CONTEXT.cipher} From ${STORY_CONTEXT.theArchive}, Cipher sends an encrypted message to ${role.name}. The message speaks of ${STORY_CONTEXT.theEcho}—erased, scattered, reduced to algorithmic afterthought. They are summoned to The Archive beneath the Thames. Use shadow, light, and whispered histories as visual metaphors.`;
     } else if (pageNum === 3) {
-        instruction = `${chapter1} ${role.name} arrives at The Archive. Cipher explains the stakes: 'Urban Renewal 2.0' is erasure of ${selectedCity}'s history. Show the gravity of the situation.`;
+        instruction = `CHAPTER 1 CONTINUED. ${role.name} arrives at The Archive. Cipher stands before holographic projections of redacted documents, censored media, and digital voids where history used to be. He explains Urban Renewal 2.0—${STORY_CONTEXT.urbanRenewal} The room hums with tension and unspoken stories. Show the weight of systematic erasure.`;
     } else if (pageNum === 4) {
-        instruction = `${chapter1} DECISION POINT. Cipher reveals The Nexus Engine - the only hope to fight back. Ask the user: How do they commit to the fight?`;
+        instruction = `CHAPTER 1 CLIMAX. Cipher reveals The Nexus Engine—the only hope to unlock their suppressed potential. "You are already powerful. This will only reveal what The Signal tried to suppress in you." DECISION POINT: Ask the user how ${role.name} commits to The OOMF Initiative. Choices should reflect different aspects of resistance (memory, action, connection, defiance).`;
 
     // Chapter 2: The Awakening (Pages 5-8)
     } else if (pageNum === 5) {
-        instruction = `${chapter2} The team assembles. Introduce the others (Fluxion, NovaCode, Lumina, VibraBolt - whoever the user is NOT). They stand before The Nexus Engine.`;
+        instruction = `CHAPTER 2: THE AWAKENING. ${STORY_CONTEXT.theNexusEngine} The recruits arrive—Fluxion, NovaCode, Lumina, VibraBolt (whoever ${role.name} is NOT). They exchange glances: fear, excitement, doubt. Show The Nexus Chamber as cathedral-like, pulsing with power, ancient-meets-futuristic. The moment before transformation.`;
     } else if (pageNum === 6) {
-        instruction = `${chapter2} ACTIVATION. The Nexus Engine turns on. Energy floods the room. Visual spectacle of power awakening.`;
+        instruction = `CHAPTER 2 CONTINUED. One by one, they step into The Nexus Engine's energy field. Visual spectacle: swirling light and code, bodies illuminated, data conduits glowing. ${role.name} feels the suppressed power awakening within them. Use imagery of light breaking through darkness, code rewriting itself, voices becoming audible.`;
     } else if (pageNum === 7) {
-        instruction = `${chapter2} POWERS MANIFEST. ${role.name} uses their power: ${role.power}. Show the team discovering their abilities.`;
+        instruction = `CHAPTER 2 CONTINUED. Powers manifest! ${role.name} discovers: ${role.power}. Show the specific visual of their ability. Fluxion bends time. NovaCode repairs corrupted data. Lumina projects lost visuals. VibraBolt amplifies silenced voices. The chamber shudders with energy. They are The OOMF now.`;
     } else if (pageNum === 8) {
-        instruction = `${chapter2} DECISION POINT. SUDDENLY: The Signal invades the system! Drones appear! Ask the user: How do they respond to the attack?`;
+        instruction = `CHAPTER 2 CLIMAX. The Nexus Chamber shudders violently. A pulse of distortion rips through The Archive—flickering error codes, dissonant frequencies. ${STORY_CONTEXT.theSignal} The Signal has detected them and is already fighting back. Cipher shouts: "The battle has already begun!" DECISION POINT: How does ${role.name} respond to The Signal's attack? Choices reflect different tactical approaches.`;
 
-    // Chapter 3: Reclamation (Pages 9-12)
+    // Chapter 3: The First Mission (Pages 9-12)
     } else if (pageNum === 9) {
-        instruction = `${chapter3} COUNTER-ATTACK. Action sequence! The OOMF team fights the drones/glitches. Use music/sound/light metaphors.`;
+        instruction = `CHAPTER 3: THE FIRST MISSION. The Signal's next target: the last underground house music sanctuary in ${selectedCity}. The OOMF counter-attack! Action sequence with ${role.name} and team using their powers. Fight with culture, energy, human connection—not just data. Use music/sound/light as weapons. Show digital infrastructure being hijacked, truth overwhelming misinformation.`;
     } else if (pageNum === 10) {
-        instruction = `${chapter3} THE INFILTRATION. They enter the digital void where 'The Echo' is trapped. It's dark, cold, corporate.`;
+        instruction = `CHAPTER 3 CONTINUED. The team infiltrates The Signal's data vaults—a digital void that is dark, cold, corporate. They navigate through suppressed records and algorithmic barriers. ${role.name} uses ${role.power} to expose hidden truths. The vault resists, but they push through with coordinated effort. Show the contrast between sterile corporate space and vibrant cultural memory.`;
     } else if (pageNum === 11) {
-        instruction = `${chapter3} CLIMAX. ${role.name} lands the final blow/hack/broadcast to break The Signal's hold. The Echo begins to materialize.`;
+        instruction = `CHAPTER 3 CLIMAX. The final blow! ${role.name} lands the decisive hack/broadcast/narrative takeover that breaks The Signal's hold. The Echo begins to re-emerge—not just as a place, but as a movement. Show the counter-rave gathering, people connecting, The Echo's legacy embedding itself so deeply that The Signal cannot erase it. Joy, struggle, resilience made visible.`;
     } else {
-        instruction = `${chapter3} RESOLUTION. The Echo returns to ${selectedCity}, vibrant and safe. Cipher speaks: "The Signal is everywhere, but so are we. We need more voices to build the future." The ending MUST explicitly bridge the story to the real world mission of BLKOUT UK: connecting Black queer communities to co-produce their own history.`;
+        instruction = `CHAPTER 3 RESOLUTION. The Echo returns to ${selectedCity}—vibrant, safe, pulsing with life. The crowd gathers as music rises. Cipher watches from rooftops: "They know who we are now. Which means we have their attention. The next move is ours." ${STORY_CONTEXT.resistance} The ending MUST bridge to BLKOUT UK's real mission: connecting Black queer communities to co-produce their own history. The fight has just begun.`;
     }
 
     const prompt = `
-You are writing 'The OOMF Origin Story', an Afrofuturist Cyberpunk comic set in ${selectedCity}. PAGE ${pageNum}.
-LANGUAGE: ${langName}.
-USER CHARACTER: ${role.name} (Power: ${role.power}).
-MENTOR: Cipher (Strategist).
-THEME: Resistance against digital erasure.
+You are writing 'The OOMF Origin Story', an Afrofuturist Cyberpunk narrative set in ${selectedCity}. PAGE ${pageNum} of 12.
+
+NARRATIVE VOICE: ${NARRATIVE_VOICE.tone}
+AVOID: ${NARRATIVE_VOICE.avoid.join(', ')}
+EMPHASIS: ${NARRATIVE_VOICE.emphasis}
+
+LANGUAGE: ${langName}
+USER CHARACTER: ${role.name} (Power: ${role.power})
+MENTOR: ${STORY_CONTEXT.cipher}
+
+STORY CONTEXT:
+${STORY_CONTEXT.themes}
 
 PREVIOUS PANELS:
-${historyText.length > 0 ? historyText : "Start the story."}
+${historyText.length > 0 ? historyText : "This is the beginning."}
 
-INSTRUCTION: ${instruction}
-IMPORTANT: Ensure scene descriptions explicitly mention recognizable landmarks of ${selectedCity} where appropriate to ground the location.
+INSTRUCTION FOR THIS PAGE: ${instruction}
 
 OUTPUT STRICT JSON ONLY:
 {
-  "caption": "Narrative text in ${langName} (${richMode ? 'max 35 words' : 'max 15 words'}).",
-  "dialogue": "Character speech in ${langName}. Essential lines only.",
-  "scene": "Visual description for image generator. MENTION '${role.name}' explicitly if they appear. MENTION 'CIPHER' if they appear. Include ${selectedCity} landmarks if relevant.",
-  "focus_char": "hero" (User) or "friend" (Cipher) or "other" (Team/Villain),
-  "choices": ["Option A", "Option B"] (Only if decision page)
+  "caption": "Narrative text in ${langName}. ${richMode ? 'Max 35 words. Poetic yet urgent, use vivid sensory details.' : 'Max 15 words. Punchy and evocative.'}",
+  "dialogue": "Character speech in ${langName}. Essential lines only. Make it feel authentic and weighty.",
+  "scene": "Visual description for image generator. MUST explicitly name ${role.name} if they appear. MUST name CIPHER if they appear. Include ${selectedCity} landmarks where relevant. Use cyberpunk and Afrofuturist visual language: neon, data streams, holographic projections, cultural symbols.",
+  "focus_char": "hero" (${role.name}) or "friend" (Cipher) or "other" (Team/Signal),
+  "choices": ["Option A", "Option B"] (Only if decision page - make choices meaningful and reflect different resistance strategies)
 }
 `;
     try {
