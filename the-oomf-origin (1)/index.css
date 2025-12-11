@@ -1,0 +1,9 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.font-comic { 
+  font-family: 'Luckiest Guy', cursive; 
+  letter-spacing: 0.05em; /* Increase spacing by default */
+}
